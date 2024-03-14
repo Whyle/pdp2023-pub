@@ -1,0 +1,129 @@
+plugins {
+  id "com.diffplug.spotless" version "6.25.0"
+  id 'java'
+}
+
+group 'it.unipd.pdp2023'
+version '1.0.0'
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+description = "PDP 2023 - Slides and source code"
+
+// Enable java 21 preview features
+tasks.withType(JavaCompile) {
+    options.compilerArgs += '--enable-preview'
+}
+tasks.withType(Test) {
+    jvmArgs += "--enable-preview"
+}
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
+}
+
+test {
+  useJUnitPlatform {
+    excludeTags 'ex1'
+  }
+}
+
+// Esercizio valutato
+
+task ex1(type: JavaExec) {
+  dependsOn(spotlessCheck)
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.ex1.Main'
+}
+
+// lezione 15
+
+task helloServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.HelloServer'
+}
+
+// accetta un argomento. Chiamare con `gradle helloClient --args Name`
+task helloClient(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.HelloClient'
+}
+
+task echoServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.EchoServer'
+}
+
+// accetta un argomento. Chiamare con `gradle helloClient --args Name`
+task echoClient(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.EchoClient'
+}
+
+task toeServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.ToeServer'
+}
+
+task toeClient(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.sockets.ToeClient'
+}
+
+// lezione 16
+
+task channelServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.channels.Server'
+}
+
+// lezione 17
+
+task webServer(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.web.Server'
+}
+
+// lezione 20
+
+task pingPong(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'it.unipd.pdp2023.actors.PingPong'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  def junitVersion = "5.9.3"
+  def junitPlatform = "1.9.3"
+
+  // Junit 5 testing framework components
+  testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+  testImplementation "org.junit.platform:junit-platform-console:$junitPlatform"
+  testImplementation "org.junit.platform:junit-platform-launcher:$junitPlatform"
+
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+}
+
+spotless {
+
+  format 'misc', {
+    target '*.gradle', '.hgignore'
+
+    trimTrailingWhitespace()
+    indentWithSpaces()
+    endWithNewline()
+  }
+  java {
+    toggleOffOn()
+
+    importOrder()
+    removeUnusedImports()
+
+    googleJavaFormat()
+  }
+}

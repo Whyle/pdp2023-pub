@@ -3,16 +3,10 @@ package it.unipd.pdp2023.bowling;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Bowling Kata
- *
- */
+/** Bowling Kata */
 public class BowlingGame {
 
-
-  public BowlingGame(String score) {
-
-  }
+  public BowlingGame(String score) {}
 
   public int score() {
 
